@@ -18,8 +18,9 @@ services:
       - key: FRONTEND_URL
         value: https://event-booking-frontend.onrender.com
 
-  - type: static
+  - type: web
     name: event-booking-frontend
+    env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     envVars:
