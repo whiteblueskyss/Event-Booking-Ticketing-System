@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: event-booking-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: event-booking-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://event-booking-frontend.onrender.com
+
+  - type: static
+    name: event-booking-frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://event-booking-backend.onrender.com
+
+databases:
+  - name: event-booking-db
+    databaseName: eventbooking
