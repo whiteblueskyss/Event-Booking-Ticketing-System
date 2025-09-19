@@ -20,11 +20,14 @@ export const useEventsData = () => {
 
   const fetchUserBookings = async (token) => {
     try {
-      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/bookings/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/bookings/user",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -37,7 +40,9 @@ export const useEventsData = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/events");
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/events"
+      );
       const data = await response.json();
 
       if (response.ok) {

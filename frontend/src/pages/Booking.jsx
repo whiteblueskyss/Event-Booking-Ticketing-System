@@ -30,7 +30,9 @@ const Booking = () => {
 
     const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`https://event-booking-ticketing-system.onrender.com/api/events/${id}`);
+        const response = await fetch(
+          `https://event-booking-ticketing-system.onrender.com/api/events/${id}`
+        );
         const data = await response.json();
 
         if (response.ok) {
@@ -71,17 +73,20 @@ const Booking = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          eventId: id,
-          numberOfTickets: numberOfTickets,
-        }),
-      });
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/bookings",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            eventId: id,
+            numberOfTickets: numberOfTickets,
+          }),
+        }
+      );
 
       const data = await response.json();
 

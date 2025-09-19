@@ -49,10 +49,13 @@ const Events = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`https://event-booking-ticketing-system.onrender.com/api/events/${eventId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `https://event-booking-ticketing-system.onrender.com/api/events/${eventId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (response.ok) {
         deleteEvent(eventId);

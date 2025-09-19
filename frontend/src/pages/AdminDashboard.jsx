@@ -44,7 +44,9 @@ const AdminDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/events");
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/events"
+      );
       const data = await response.json();
       setEvents(data);
       setLoading(false);
@@ -66,20 +68,23 @@ const AdminDashboard = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/events", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...formData,
-          price: parseFloat(formData.price),
-          totalSeats: parseInt(formData.totalSeats),
-          availableSeats: parseInt(formData.totalSeats),
-          date: new Date(formData.date + "T" + formData.time),
-        }),
-      });
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/events",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...formData,
+            price: parseFloat(formData.price),
+            totalSeats: parseInt(formData.totalSeats),
+            availableSeats: parseInt(formData.totalSeats),
+            date: new Date(formData.date + "T" + formData.time),
+          }),
+        }
+      );
 
       if (response.ok) {
         toast.success("Event created successfully!");
@@ -161,10 +166,13 @@ const AdminDashboard = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(`https://event-booking-ticketing-system.onrender.com/api/events/${eventId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `https://event-booking-ticketing-system.onrender.com/api/events/${eventId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (response.ok) {
         toast.success("Event deleted successfully!");
