@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { EventContext } from "./eventContextInstance";
+import { API_ENDPOINTS } from "../config/api";
 
 const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
@@ -11,7 +12,7 @@ const EventProvider = ({ children }) => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/events");
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL);
       const data = await response.json();
 
       if (response.ok) {
@@ -37,7 +38,7 @@ const EventProvider = ({ children }) => {
         return;
       }
 
-      const response = await fetch("http://localhost:3000/api/bookings/user", {
+      const response = await fetch(API_ENDPOINTS.BOOKINGS.GET_USER_BOOKINGS, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
