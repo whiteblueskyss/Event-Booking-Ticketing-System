@@ -6,7 +6,6 @@ import EventList from "../components/EventList";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import ThankYouModal from "../components/ThankYouModal";
-import { API_ENDPOINTS } from "../config/api";
 import { useBookingLogic } from "../hooks/useBookingLogic";
 import { useEventContext } from "../hooks/useEventContext";
 
@@ -50,7 +49,7 @@ const Events = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(API_ENDPOINTS.EVENTS.GET_BY_ID(eventId), {
+      const response = await fetch(`https://event-booking-ticketing-system.onrender.com/api/events/${eventId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

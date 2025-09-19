@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { API_ENDPOINTS } from "../config/api";
 
 export const useEventsData = () => {
   const [events, setEvents] = useState([]);
@@ -21,7 +20,7 @@ export const useEventsData = () => {
 
   const fetchUserBookings = async (token) => {
     try {
-      const response = await fetch(API_ENDPOINTS.BOOKINGS.GET_USER_BOOKINGS, {
+      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/bookings/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +37,7 @@ export const useEventsData = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL);
+      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/events");
       const data = await response.json();
 
       if (response.ok) {

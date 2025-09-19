@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { API_ENDPOINTS } from "../config/api";
 import { EventContext } from "./eventContextInstance";
 
 const EventProvider = ({ children }) => {
@@ -12,7 +11,13 @@ const EventProvider = ({ children }) => {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL);
+      console.log(
+        "Fetching events from:",
+        "https://event-booking-ticketing-system.onrender.com/api/events"
+      );
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/events"
+      );
       const data = await response.json();
 
       if (response.ok) {
@@ -38,11 +43,14 @@ const EventProvider = ({ children }) => {
         return;
       }
 
-      const response = await fetch(API_ENDPOINTS.BOOKINGS.GET_USER_BOOKINGS, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://event-booking-ticketing-system.onrender.com/api/bookings/user",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {

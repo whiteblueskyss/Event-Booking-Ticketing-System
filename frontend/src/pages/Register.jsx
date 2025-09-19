@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { API_ENDPOINTS } from "../config/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -46,7 +45,7 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
+      const response = await fetch("https://event-booking-ticketing-system.onrender.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
