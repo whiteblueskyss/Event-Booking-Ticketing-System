@@ -1,13 +1,15 @@
 {
-  "name": "frontend",
+  "name": "event-booking-system-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Event Booking and Ticketing System - React application for browsing, booking, and managing events",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint . --fix",
+    "preview": "vite preview",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",

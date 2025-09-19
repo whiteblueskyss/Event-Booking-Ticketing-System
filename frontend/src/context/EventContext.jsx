@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
 import { EventContext } from "./eventContextInstance";
 
+// API base URL for all event-related requests
+const API_BASE_URL = "https://event-booking-ticketing-system.onrender.com";
+
+/**
+ * EventProvider Component
+ * Provides global state management for events and user bookings
+ * Handles fetching, updating, and deleting events and bookings
+ */
 const EventProvider = ({ children }) => {
+  // State management
   const [events, setEvents] = useState([]);
   const [userBookings, setUserBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch events from backend
+  /**
+   * Fetch all events from the backend API
+   */
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      console.log(
-        "Fetching events from:",
-        "https://event-booking-ticketing-system.onrender.com/api/events"
-      );
-      const response = await fetch(
-        "https://event-booking-ticketing-system.onrender.com/api/events"
-      );
+      const response = await fetch(`${API_BASE_URL}/api/events`);
       const data = await response.json();
 
       if (response.ok) {
@@ -34,7 +39,9 @@ const EventProvider = ({ children }) => {
     }
   };
 
-  // Fetch user bookings
+  /**
+   * Fetch user-specific bookings from the backend API
+   */
   const fetchUserBookings = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -43,14 +50,11 @@ const EventProvider = ({ children }) => {
         return;
       }
 
-      const response = await fetch(
-        "https://event-booking-ticketing-system.onrender.com/api/bookings/user",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/bookings/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const data = await response.json();
       if (response.ok) {
