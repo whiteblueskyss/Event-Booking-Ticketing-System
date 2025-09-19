@@ -6,6 +6,7 @@ import EventList from "../components/EventList";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import ThankYouModal from "../components/ThankYouModal";
+import { API_ENDPOINTS } from "../config/api";
 import { useBookingLogic } from "../hooks/useBookingLogic";
 import { useEventContext } from "../hooks/useEventContext";
 
@@ -49,13 +50,10 @@ const Events = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/events/${eventId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_BY_ID(eventId), {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (response.ok) {
         deleteEvent(eventId);

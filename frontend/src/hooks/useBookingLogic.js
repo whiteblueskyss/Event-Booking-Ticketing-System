@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../config/api";
 
 export const useBookingLogic = (
   events,
@@ -40,7 +41,7 @@ export const useBookingLogic = (
       };
 
       const response = await axios.post(
-        "http://localhost:3000/api/bookings",
+        API_ENDPOINTS.BOOKINGS.CREATE,
         payload,
         {
           headers: {

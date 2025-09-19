@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { API_ENDPOINTS } from "../config/api";
 
 const Booking = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const Booking = () => {
 
     const fetchEventDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/events/${id}`);
+        const response = await fetch(API_ENDPOINTS.EVENTS.GET_BY_ID(id));
         const data = await response.json();
 
         if (response.ok) {
@@ -71,7 +72,7 @@ const Booking = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/bookings", {
+      const response = await fetch(API_ENDPOINTS.BOOKINGS.CREATE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

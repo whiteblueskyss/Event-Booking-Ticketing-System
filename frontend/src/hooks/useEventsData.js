@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_ENDPOINTS } from "../config/api";
 
 export const useEventsData = () => {
   const [events, setEvents] = useState([]);
@@ -20,7 +21,7 @@ export const useEventsData = () => {
 
   const fetchUserBookings = async (token) => {
     try {
-      const response = await fetch("http://localhost:3000/api/bookings/user", {
+      const response = await fetch(API_ENDPOINTS.BOOKINGS.GET_USER_BOOKINGS, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -37,7 +38,7 @@ export const useEventsData = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/events");
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL);
       const data = await response.json();
 
       if (response.ok) {

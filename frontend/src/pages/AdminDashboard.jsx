@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import { API_ENDPOINTS } from "../config/api";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const AdminDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/events");
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL);
       const data = await response.json();
       setEvents(data);
       setLoading(false);
@@ -66,7 +67,7 @@ const AdminDashboard = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:3000/api/events", {
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_ALL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +114,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/events/${editingEvent._id}`,
+        API_ENDPOINTS.EVENTS.GET_BY_ID(editingEvent._id),
         {
           method: "PUT",
           headers: {
@@ -161,13 +162,10 @@ const AdminDashboard = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/events/${eventId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(API_ENDPOINTS.EVENTS.GET_BY_ID(eventId), {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (response.ok) {
         toast.success("Event deleted successfully!");
