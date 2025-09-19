@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { EventContext } from "./eventContextInstance";
 import { API_ENDPOINTS } from "../config/api";
+import { EventContext } from "./eventContextInstance";
 
 const EventProvider = ({ children }) => {
   const [events, setEvents] = useState([]);
