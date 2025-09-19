@@ -94,19 +94,26 @@ Before running this application, make sure you have the following installed:
 
 3. **Configure Backend Environment**
 
-   ```bash
-   cp .env.example .env
-   ```
-
-   Edit the `.env` file with your configuration:
+   Create a `.env` file in the `backend` directory with the following content:
 
    ```env
    NODE_ENV=development
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/eventbooking
-   JWT_SECRET=your-very-long-and-secure-jwt-secret-key
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/event-booking
+   JWT_SECRET=EventBooking2025_SuperSecret_RandomKey_12345!@#$%
+   JWT_EXPIRE=30d
    FRONTEND_URL=http://localhost:5173
    ```
+
+   **For MongoDB Atlas (Cloud Database):**
+
+   If you prefer to use MongoDB Atlas instead of local MongoDB:
+
+   ```env
+   MONGODB_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/event-booking?retryWrites=true&w=majority
+   ```
+
+   Replace `username`, `password`, and the cluster URL with your actual MongoDB Atlas credentials.
 
 4. **Setup Frontend**
 
@@ -115,19 +122,59 @@ Before running this application, make sure you have the following installed:
    npm install
    ```
 
-5. **Configure Frontend Environment**
+5. **Configure Frontend for Local Development**
 
-   ```bash
-   cp .env.example .env
-   ```
+   The frontend is currently configured to use the production API URLs. For local development, you need to update the API endpoints:
 
-   Edit the `.env` file:
+   **Option A: Create Environment Variables (Recommended)**
+
+   Create a `.env` file in the `frontend` directory:
 
    ```env
-   VITE_API_URL=http://localhost:5000
+   VITE_API_URL=http://localhost:3000
    ```
 
-6. **Start the Application**
+   Then update the frontend files to use this environment variable instead of hardcoded URLs.
+
+   **Option B: Manually Update API URLs**
+
+   Update the following files to use `http://localhost:3000` instead of the production URL:
+
+   - `src/context/EventContext.jsx` - Line 6: Update `API_BASE_URL`
+   - `src/pages/Login.jsx` - Update fetch URLs
+   - `src/pages/Register.jsx` - Update fetch URLs
+   - `src/pages/Booking.jsx` - Update fetch URLs
+   - `src/pages/Events.jsx` - Update fetch URLs
+   - `src/pages/AdminDashboard.jsx` - Update fetch URLs
+   - `src/hooks/useBookingLogic.js` - Update fetch URLs
+   - `src/hooks/useEventsData.js` - Update fetch URLs
+
+   **Example for EventContext.jsx:**
+
+   ```javascript
+   // Change this line
+   const API_BASE_URL = "https://event-booking-ticketing-system.onrender.com";
+
+   // To this for local development
+   const API_BASE_URL = "http://localhost:3000";
+   ```
+
+6. **Start MongoDB (if using local MongoDB)**
+
+   Make sure MongoDB is running on your system:
+
+   ```bash
+   # On macOS with Homebrew
+   brew services start mongodb/brew/mongodb-community
+
+   # On Ubuntu/Linux
+   sudo systemctl start mongod
+
+   # On Windows
+   net start MongoDB
+   ```
+
+7. **Start the Application**
 
    Open two terminal windows:
 
@@ -135,6 +182,8 @@ Before running this application, make sure you have the following installed:
 
    ```bash
    cd backend
+   npm start
+   # or for development with auto-restart
    npm run dev
    ```
 
@@ -145,20 +194,55 @@ Before running this application, make sure you have the following installed:
    npm run dev
    ```
 
-7. **Seed the Database**
+8. **Seed the Database**
+
+   To populate the database with sample data:
+
    ```bash
    cd backend
-   npm run seed
+   node seeder.js
    ```
+
+   This will create sample users, events, and bookings for testing.
 
 The application will be available at:
 
 - **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5000
+- **Backend API**: http://localhost:3000
+
+### Important Notes for Local Development
+
+1. **CORS Configuration**: The backend is configured to allow requests from `http://localhost:5173` for local development.
+
+2. **Database Connection**: If you encounter database connection issues, ensure:
+
+   - MongoDB is running (for local setup)
+   - Your MongoDB Atlas credentials are correct (for cloud setup)
+   - Network access is properly configured in MongoDB Atlas
+
+3. **Port Conflicts**: If port 3000 or 5173 are already in use, you can:
+
+   - Change the backend port in `.env` file (`PORT=3001`)
+   - The frontend port can be changed in `vite.config.js`
+
+4. **Production vs Development**: The current codebase is configured for production deployment. For local development, you must update the API URLs as described in step 5 above.
+
+### Switching Between Local and Production
+
+To switch your frontend between local development and production:
+
+**For Local Development:**
+
+- Update all `https://event-booking-ticketing-system.onrender.com` URLs to `http://localhost:3000`
+
+**For Production:**
+
+- Revert all API URLs back to `https://event-booking-ticketing-system.onrender.com`
+- Commit and push changes to trigger automatic deployment on Render
 
 ## Demo Credentials
 
-For testing purposes, you can use these pre-seeded accounts:
+For testing purposes, you can use these pre-seeded accounts (after running the seeder):
 
 ### Regular User Account
 
@@ -189,44 +273,64 @@ Event-Booking-Ticketing-System/
 │   │   ├── auth.js             # Authentication routes
 │   │   ├── events.js           # Event management routes
 │   │   └── bookings.js         # Booking management routes
-│   ├── .env.example            # Environment variables template
+│   ├── .env                    # Environment variables (create this)
 │   ├── server.js               # Express server entry point
 │   ├── seeder.js               # Database seeding script
 │   └── package.json            # Backend dependencies
 ├── frontend/                   # React frontend application
 │   ├── public/
 │   │   ├── _redirects          # Routing configuration for deployment
-│   │   └── event.png           # Application assets
+│   │   ├── 404.html            # SPA fallback page
+│   │   ├── .htaccess           # Apache routing configuration
+│   │   └── event.png           # Application favicon
 │   ├── src/
 │   │   ├── components/         # Reusable UI components
 │   │   │   ├── EventCard.jsx
+│   │   │   ├── EventList.jsx
 │   │   │   ├── BookingModal.jsx
+│   │   │   ├── ThankYouModal.jsx
 │   │   │   ├── Header.jsx
-│   │   │   └── Footer.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── ScrollToTop.jsx
 │   │   ├── pages/              # Main page components
 │   │   │   ├── Home.jsx
 │   │   │   ├── Events.jsx
 │   │   │   ├── EventDetail.jsx
 │   │   │   ├── Booking.jsx
 │   │   │   ├── Dashboard.jsx
+│   │   │   ├── AdminDashboard.jsx
 │   │   │   ├── Login.jsx
 │   │   │   └── Register.jsx
 │   │   ├── context/            # React Context for state management
-│   │   │   └── EventContext.jsx
+│   │   │   ├── EventContext.jsx
+│   │   │   └── eventContextInstance.js
 │   │   ├── hooks/              # Custom React hooks
 │   │   │   ├── useEventsData.js
+│   │   │   ├── useEventContext.js
 │   │   │   └── useBookingLogic.js
-│   │   ├── config/
-│   │   │   └── api.js          # API configuration
+│   │   ├── assets/             # Static assets
+│   │   │   └── react.svg
 │   │   ├── App.jsx             # Main application component
-│   │   └── main.jsx            # React application entry point
-│   ├── .env.example            # Environment variables template
+│   │   ├── main.jsx            # React application entry point
+│   │   ├── App.css             # Application styles
+│   │   └── index.css           # Global styles
+│   ├── .env                    # Environment variables (create this for local dev)
+│   ├── vite.config.js          # Vite configuration
+│   ├── eslint.config.js        # ESLint configuration
+│   ├── README.md               # Frontend documentation
 │   └── package.json            # Frontend dependencies
 ├── render.yaml                 # Render deployment configuration
 ├── DEPLOYMENT.md               # Detailed deployment instructions
 ├── FREE-DEPLOYMENT.md          # Free tier deployment guide
 └── README.md                   # This file
 ```
+
+**Key Files for Local Development:**
+
+- **Backend `.env`**: Database connection and JWT configuration
+- **Frontend API URLs**: Hardcoded in components (need manual update for local dev)
+- **seeder.js**: Populates database with sample data
+- **vite.config.js**: Frontend build and development configuration
 
 ## API Endpoints
 
